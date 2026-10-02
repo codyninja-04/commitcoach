@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Colours live here as RGB channels so Tailwind's opacity modifiers work.
+ * Light values come straight from the design spec. Dark mode keeps the same
+ * warm stone family so the app feels like the same place at night.
+ */
+:root {
+  --background: 250 250 249;
+  --surface: 255 255 255;
+  --subtle: 245 245 244;
+  --border: 231 229 228;
+  --primary: 5 150 105;
+  --primary-soft: 209 250 229;
+  --streak: 249 115 22;
+  --completed: 22 163 74;
+  --missed: 220 38 38;
+  --text: 28 25 23;
+  --muted: 120 113 108;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: 12 10 9;
+    --surface: 28 25 23;
+    --subtle: 41 37 36;
+    --border: 50 46 44;
+    --primary: 16 185 129;
+    --primary-soft: 6 78 59;
+    --streak: 251 146 60;
+    --completed: 34 197 94;
+    --missed: 248 113 113;
+    --text: 250 250 249;
+    --muted: 168 162 158;
+    color-scheme: dark;
+  }
+}
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    @apply bg-background text-text;
+  }
+  ::selection {
+    @apply bg-primary/20;
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl border border-border bg-surface shadow-card;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition
+      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2
+      focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply btn bg-primary text-white hover:bg-primary/90 active:scale-[0.98];
+  }
+  .btn-secondary {
+    @apply btn border border-border bg-surface text-text hover:bg-subtle active:scale-[0.98];
+  }
+  .btn-ghost {
+    @apply btn text-muted hover:bg-subtle hover:text-text;
+  }
+  .input {
+    @apply w-full rounded-xl border border-border bg-surface px-3.5 py-2.5 text-[15px] text-text placeholder:text-muted/70
+      focus:border-primary/60 focus:outline-none focus:ring-2 focus:ring-primary/20;
+  }
+  .label {
+    @apply mb-1.5 block text-[13px] font-semibold text-text;
+  }
+  .chip {
+    @apply inline-flex items-center rounded-full border border-border bg-surface px-3 py-1.5 text-[13px] font-medium text-muted
+      transition hover:border-text/30 hover:text-text;
+  }
+  .chip-on {
+    @apply border-primary/50 bg-primary-soft text-text hover:border-primary/60;
+  }
+  .eyebrow {
+    @apply text-[11px] font-semibold uppercase tracking-[0.08em] text-muted;
+  }
+  .reflection {
+    @apply text-sm leading-[1.6] text-text/90;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
