@@ -1,0 +1,24 @@
+name: Daily check-in reminders
+
+# Calls the reminder endpoint at the top of every hour. The endpoint decides
+# who is due a nudge based on each user's own timezone and reminder hour.
+# Needs two repository secrets: APP_URL (e.g. https://commitcoach.app) and CRON_SECRET.
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+jobs:
+  remind:
+    runs-on: ubuntu-latest
+    if: ${{ vars.REMINDERS_ENABLED == 'true' }}
+    steps:
+      - name: Trigger reminders
+        env:
+          APP_URL: ${{ secrets.APP_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          curl --fail --silent --show-error --max-time 60 \
+            -H "Authorization: Bearer $CRON_SECRET" \
+            "$APP_URL/api/cron/reminders"
